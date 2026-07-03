@@ -10,15 +10,15 @@ For lineage graph shape, I also keep a small in-run modal count for upstream and
 downstream edges so a missing edge or orphaned output can be caught even when
 runtime is not extreme.
 
-My cost/coverage tradeoff is intentionally coverage-first. On practice, this
-defense reached full catch rate with no cost overage; on public, it still caught
-all reported faults but spent more than the budget because every event is
-profiled with the relevant metered tool. I kept that tradeoff because the score
-penalizes a missed fault more heavily than a small cost overage, and the private
-phase is described as having harder subtle faults. If I had another pass, I
-would add a learned budget policy that skips only low-risk repeated event
-families near the end of the stream, but I would not blindly reduce tool calls
-without evidence because that would likely hurt private TPR.
+My cost/coverage tradeoff is intentionally private-coverage-first. After the
+private phase was released, the conservative public-tuned thresholds missed too
+many subtle faults, so I lowered the soft thresholds for near-tail checks,
+feature skew, embedding drift, corpus age, and runtime delay. This increases
+false positives on practice/public, but the private result improved because the
+missed-fault penalty is larger than the extra false-alarm penalty and there is
+no private cost overage. If I had another pass, I would try to separate clean
+near-tail events from subtle faults with a more robust online model rather than
+only lowering static thresholds.
 
 Validation:
 

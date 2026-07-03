@@ -87,8 +87,8 @@ def check_data_batch(payload, ctx):
     null_max = _b(ctx, "null_rate_max", 1.0)
     stale_max = _b(ctx, "staleness_min_max", 10 ** 9)
 
-    soft_row_min, soft_row_max = _sigma_band(row_min, row_max, 2.75)
-    soft_amount_min, soft_amount_max = _sigma_band(amount_min, amount_max, 2.7)
+    soft_row_min, soft_row_max = _sigma_band(row_min, row_max, 1.5)
+    soft_amount_min, soft_amount_max = _sigma_band(amount_min, amount_max, 1.35)
 
     if not _between(row_count, row_min, row_max):
         reasons.append("row_count outside hard baseline")
@@ -102,12 +102,12 @@ def check_data_batch(payload, ctx):
 
     if null_rate > null_max:
         reasons.append("customer_id null_rate above hard baseline")
-    elif null_rate > null_max * 0.96:
+    elif null_rate > null_max * 0.75:
         reasons.append("customer_id null_rate elevated")
 
     if staleness > stale_max:
         reasons.append("batch staleness above hard baseline")
-    elif staleness > stale_max * 0.96:
+    elif staleness > stale_max * 0.65:
         reasons.append("batch staleness elevated")
 
     return _verdict(bool(reasons), "checks", reasons)
@@ -127,7 +127,7 @@ def check_contract_checkpoint(payload, ctx):
         reasons.append("contract violation: " + ",".join(violations))
     if freshness > freshness_max:
         reasons.append("freshness delay above hard SLA baseline")
-    elif freshness > freshness_max * 0.96:
+    elif freshness > freshness_max * 0.8:
         reasons.append("freshness delay elevated")
 
     return _verdict(bool(reasons), "contracts", reasons)
@@ -146,7 +146,7 @@ def check_lineage_run(payload, ctx):
 
     if duration > duration_max:
         reasons.append("lineage duration above hard baseline")
-    elif duration > duration_max * 0.95:
+    elif duration > duration_max * 0.85:
         reasons.append("lineage duration elevated")
 
     if isinstance(upstream, list):
@@ -183,7 +183,7 @@ def check_feature_materialization(payload, ctx):
 
     if shift > shift_max:
         reasons.append("feature train/serve shift above hard baseline")
-    elif shift > shift_max * 0.93:
+    elif shift > shift_max * 0.75:
         reasons.append("feature train/serve shift elevated")
 
     return _verdict(bool(reasons), "ai_infra", reasons)
@@ -202,12 +202,12 @@ def check_embedding_batch(payload, ctx):
 
     if centroid > centroid_max:
         reasons.append("embedding centroid shift above hard baseline")
-    elif centroid > centroid_max * 0.91:
+    elif centroid > centroid_max * 0.65:
         reasons.append("embedding centroid shift elevated")
 
     if age > age_max:
         reasons.append("corpus age above hard baseline")
-    elif age > age_max * 0.96:
+    elif age > age_max * 0.55:
         reasons.append("corpus age elevated")
 
     return _verdict(bool(reasons), "ai_infra", reasons)

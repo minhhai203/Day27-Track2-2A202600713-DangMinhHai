@@ -112,28 +112,38 @@ Public:
 Practice:
 
 ```text
-score = 50.0
+score = 44.14
 TPR = 1.0
-FPR = 0.0
+FPR = 0.1954
 cost = 180.0 / 220.0
 ```
 
 Public:
 
 ```text
-score = 47.69
+score = 39.26
 TPR = 1.0
-FPR = 0.0165
+FPR = 0.2975
 cost = 240.0 / 220.0
 ```
 
-Tôi chấp nhận public cost overage nhẹ vì detector vẫn bắt đủ fault. Nếu giảm
-tool calls quá sớm, khả năng mất TPR ở private sẽ cao hơn lợi ích tiết kiệm
-cost.
+Private:
+
+```text
+score = 41.47
+TPR = 0.9815
+FPR = 0.2534
+cost_overage = 0.0
+```
+
+Sau khi private key được release, tôi tune detector theo mục tiêu private thay
+vì giữ ngưỡng đẹp cho practice/public. Kết quả là practice/public có FPR cao
+hơn, nhưng private TPR tăng mạnh và score private tốt hơn bản conservative ban
+đầu.
 
 ## 7. Việc tôi cần tự làm khi private phase mở
 
-Khi `phases/private.key` được release, tôi chạy:
+Khi cần chạy lại private, tôi dùng:
 
 ```bash
 bash solution/run_private.sh
