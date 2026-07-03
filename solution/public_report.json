@@ -3,11 +3,11 @@
     "n_faulty": 39,
     "n_clean": 121,
     "tpr": 1.0,
-    "fpr": 0.2975,
+    "fpr": 0.2562,
     "cost_ledger": 240.0,
     "budget": 220.0,
     "cost_overage": 0.0909,
-    "score": 39.26,
+    "score": 40.5,
     "phase": "public",
     "defense_file": "solution/defense.py",
     "per_pillar_band": {
@@ -18,5 +18,5 @@
       "checks": "high"
     }
   },
-  "signature": "d23fab4b7ed8a8b2edeafdc18aad331c2a3647ce862239ecab6b196f93ab353a"
+  "signature": "6247094b16ac1de9375eba82d7d056891fd04f67ada95c05fc6a0f3ebd3b06f4"
 }

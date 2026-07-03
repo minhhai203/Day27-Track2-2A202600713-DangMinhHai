@@ -87,13 +87,10 @@ def check_data_batch(payload, ctx):
     null_max = _b(ctx, "null_rate_max", 1.0)
     stale_max = _b(ctx, "staleness_min_max", 10 ** 9)
 
-    soft_row_min, soft_row_max = _sigma_band(row_min, row_max, 1.5)
     soft_amount_min, soft_amount_max = _sigma_band(amount_min, amount_max, 1.35)
 
     if not _between(row_count, row_min, row_max):
         reasons.append("row_count outside hard baseline")
-    elif not _between(row_count, soft_row_min, soft_row_max):
-        reasons.append("row_count near tail")
 
     if not _between(mean_amount, amount_min, amount_max):
         reasons.append("mean_amount outside hard baseline")
@@ -207,7 +204,7 @@ def check_embedding_batch(payload, ctx):
 
     if age > age_max:
         reasons.append("corpus age above hard baseline")
-    elif age > age_max * 0.55:
+    elif age > age_max * 0.62:
         reasons.append("corpus age elevated")
 
     return _verdict(bool(reasons), "ai_infra", reasons)

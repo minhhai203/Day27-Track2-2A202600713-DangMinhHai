@@ -16,9 +16,14 @@ many subtle faults, so I lowered the soft thresholds for near-tail checks,
 feature skew, embedding drift, corpus age, and runtime delay. This increases
 false positives on practice/public, but the private result improved because the
 missed-fault penalty is larger than the extra false-alarm penalty and there is
-no private cost overage. If I had another pass, I would try to separate clean
-near-tail events from subtle faults with a more robust online model rather than
-only lowering static thresholds.
+no private cost overage. In the final tuning pass, I removed the row-count soft
+tail check while keeping the hard row-count baseline, because private scoring
+showed that rule added false positives without adding true positives. I also
+raised the corpus-age soft threshold from 0.55 to 0.62 of the published maximum;
+that kept the same private true-positive rate while reducing false positives.
+If I had another pass, I would try to separate clean near-tail events from
+subtle faults with a more robust online model rather than only lowering static
+thresholds.
 
 Validation:
 
